@@ -1,11 +1,18 @@
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { signInAPI } from "../actions";
-import { Navigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";//import this for navigating
 import PropTypes from 'prop-types';
 
 
 const Login = (props) => {
+
+  //line no 11-14 is used for navigating to different route
+  const navigate = useNavigate();
+  const handleSignInClick = () => {
+    navigate('/signin');
+  };
+
   return (
     <Container>
       {props.user && <Navigate to="/home" />}
@@ -15,7 +22,7 @@ const Login = (props) => {
         </a>
         <div>
           <Join>Join now</Join>
-          <SignIn>Sign in</SignIn>
+          <SignIn onClick={handleSignInClick}>Sign in</SignIn> 
         </div>
       </Nav>
       <Section>

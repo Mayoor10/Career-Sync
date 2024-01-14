@@ -22,7 +22,7 @@ router.post('/signUp',(req,res)=>{
     User.findOne({email:email})
     .then((saveUser)=>{
         if(saveUser){
-            return res.status(422).json({error:"This email alreadt exists!"})
+            return res.status(422).json({error:"This email already exists!"})
         }
         bcrypt.hash(password,12)
         .then((hashedPassword)=>{
