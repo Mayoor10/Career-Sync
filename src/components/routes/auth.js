@@ -53,22 +53,24 @@ router.post('/signIn',(req,res)=>{
     if(!email||!password){
         return res.status(422).json({error:"Fill all fields!"})
     }
-    User.find({email:email})
+    User.findOne({email:email})
     .then((savedUser)=>{
         if(!savedUser){//case where no email is found in database
             return res.status(422).json({error:"Enter valid username and password"})
         }
-        bcrypt.compare(password,savedUser.password,(matchedUser)=>{
+        bcrypt.compare(password,savedUser.password)
+        .then(matchedUser=>{
             console.log(savedUser)
             if(matchedUser){//case where email and password do not match
-                const token = jwt.sign({id:savedUser._id},JWT_SECRET)
-                return res.json({token:token})
+                const token = jwt.sign({_id:savedUser._id},JWT_SECRET)
+                return res.json({token})
             }
             else{
                 return res.status(404).json({error:"Enter valid username and password"})
             }
 
         })
+        .catch((err)=>{console.log(err)})
         
     })
     .catch((err)=>{console.log(err)})
